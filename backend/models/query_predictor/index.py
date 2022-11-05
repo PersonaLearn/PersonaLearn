@@ -4,9 +4,9 @@ from backend.models.query_predictor import query_template
 QUERY_TEMPLATER = query_template.QueryTemplate()
 
 
-def predict_query_from_transcript(video_title: str, transcript: str):
+def predict_query_from_transcript(video_title: str, transcript: str) -> list[str]:
     """
-    Predict a search query using GPT-3 from a video title
+    Predict several search queries using GPT-3 from a video title
     and a transcript of a section which was confusing.
     """
     prompt = QUERY_TEMPLATER.generate_query(video_title, transcript)
@@ -19,4 +19,4 @@ def predict_query_from_transcript(video_title: str, transcript: str):
         frequency_penalty=0.7,
         presence_penalty=0.0,
     )
-    return response
+    return [choice["text"].strip() for choice in response["choices"]]

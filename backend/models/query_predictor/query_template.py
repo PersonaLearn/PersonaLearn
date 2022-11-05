@@ -45,7 +45,7 @@ class QueryTemplate:
         """Generate a GPT-3 query from a video title and transcript data."""
         return self.populate_template_with_variables(
             {
-                video_title: video_title,
-                transcript: transcript,
+                "video_title": video_title,
+                "transcript": transcript,
             }
         )
