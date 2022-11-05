@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "scripts": {
     "install": "pip install -r requirements.txt",
-    "lint:py": "pylint backend"
+    "lint:py": "pylint backend",
+    "format:py": "black backend"
   },
   "repository": {
     "type": "git",
