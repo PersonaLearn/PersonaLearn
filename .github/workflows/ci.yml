@@ -21,7 +21,6 @@ jobs:
       - name: Install all dependencies
         run: |
           npm install
-      - name: Lint Python files
+      - name: Lint files
         run: |
-          npm run lint:py
-          npm run lint:black
+          npm run lint
