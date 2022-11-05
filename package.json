@@ -4,6 +4,7 @@
   "scripts": {
     "install": "pip install -r requirements.txt",
     "lint:py": "pylint backend",
+    "lint:black": "black --check backend",
     "format:py": "black backend"
   },
   "repository": {
