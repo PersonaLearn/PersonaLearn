@@ -9,7 +9,8 @@
     "lint:prettier": "prettier --check  **/*.{json,yml,md} extension",
     "format": "concurrently --kill-others-on-fail \"npm:format:py\" \"npm:format:prettier\"",
     "format:py": "black backend",
-    "format:prettier": "prettier --write  **/*.{json,yml,md} extension"
+    "format:prettier": "prettier --write  **/*.{json,yml,md} extension",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -25,5 +26,12 @@
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
     "prettier": "^2.7.1"
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx,css,json,yml,md}": "prettier --write",
+    "*.py": [
+      "black",
+      "pylint"
+    ]
   }
 }
