@@ -23,3 +23,7 @@ This project requires Python 3.6+ and Node.js 10+.
 ```bash
 > npm install # this will also install Python's dependencies
 ```
+
+## Environment Variables
+
+- **OPENAI_API_KEY**
