@@ -3,9 +3,13 @@
   "version": "0.1.0",
   "scripts": {
     "install": "pip install -r requirements.txt",
+    "lint": "concurrently --kill-others-on-fail \"npm:lint:py\" \"npm:lint:black\" \"npm:lint:prettier\"",
     "lint:py": "pylint backend",
     "lint:black": "black --check backend",
-    "format:py": "black backend"
+    "lint:prettier": "prettier --check  **/*.{json,yml,md} extension",
+    "format": "concurrently --kill-others-on-fail \"npm:format:py\" \"npm:format:prettier\"",
+    "format:py": "black backend",
+    "format:prettier": "prettier --write  **/*.{json,yml,md} extension"
   },
   "repository": {
     "type": "git",
