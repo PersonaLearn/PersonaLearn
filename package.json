@@ -1,0 +1,16 @@
+{
+  "name": "personalearn",
+  "version": "0.1.0",
+  "scripts": {
+    "install": "pip install -r requirements.txt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PersonaLearn/PersonaLearn.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/PersonaLearn/PersonaLearn/issues"
+  },
+  "homepage": "https://github.com/PersonaLearn/PersonaLearn#readme"
+}
