@@ -95,11 +95,21 @@ function YoutubeAcceptor({ onChange, status, hidden }) {
 function VideoPlayer({ hidden, link }) {
   const [shouldRender] = useDelayUnmount(!hidden, 1200, 1200);
   const [location, setLocation] = useState(0);
+  const [confusingLocations, setConfusingLocations] = useState([]);
+  const [playing, setPlaying] = useState(true);
 
   if (!shouldRender) return null;
 
   const onProgress = (event) => {
     setLocation(event.playedSeconds);
+  };
+
+  const markLocation = () => {
+    setConfusingLocations([...confusingLocations, location]);
+  };
+
+  const handleFinished = () => {
+    setPlaying(false);
   };
 
   return (
@@ -109,10 +119,33 @@ function VideoPlayer({ hidden, link }) {
           url={link}
           width="100%"
           height="60vh"
+          playing={playing}
           style={{ minHeight: "300px" }}
           controls
           onProgress={onProgress}
         />
+        <div>
+          <div className="p-8 pb-4 flex space-x-8">
+            <button
+              className="flex-1 px-8 py-4 border-2 border-violet-100 text-violet-100 text-2xl transition hover:-translate-y-1"
+              onClick={markLocation}
+            >
+              Mark Confusing Location
+            </button>
+            <button
+              className="flex-1 px-8 py-4 border-2 border-emerald-100 text-emerald-100 text-2xl transition hover:-translate-y-1"
+              onClick={handleFinished}
+            >
+              I'm Finished →
+            </button>
+          </div>
+          <div className="flex space-x-8">
+            <p className="flex-1 text-center text-slate-600">
+              {confusingLocations.length} Locations Marked
+            </p>
+            <div className="flex-1"></div>
+          </div>
+        </div>
       </div>
     )
   );
