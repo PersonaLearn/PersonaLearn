@@ -1,13 +1,22 @@
 import { useState, useEffect } from "react";
+import ReactPlayer from "react-player";
 
-function Status({ message, type }) {
-  const typeToClass = {
-    error: "text-red-800",
-    success: "text-green-800",
-    info: "text-slate-300",
-  };
-  return <p className={"text-center p-4 " + typeToClass[type]}>{message}</p>;
-}
+// ==============================
+// > CONSTANTS
+// ==============================
+
+const YOUTUBE_VIDEO_REGEX =
+  /^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/watch\?v=(.+)$/g;
+
+// ==============================
+// > HELPER METHODS
+// ==============================
+
+// None yet
+
+// ==============================
+// > HOOKS
+// ==============================
 
 function useDelayUnmount(isMounted, delayUnmountTime, delayMountTime = 0) {
   const [shouldRender, setShouldRender] = useState(false);
@@ -32,6 +41,19 @@ function useDelayUnmount(isMounted, delayUnmountTime, delayMountTime = 0) {
   }, [isMounted, delayUnmountTime, delayMountTime, shouldRender]);
 
   return [shouldRender];
+}
+
+// ==============================
+// > COMPONENTS
+// ==============================
+
+function Status({ message, type }) {
+  const typeToClass = {
+    error: "text-red-800",
+    success: "text-green-800",
+    info: "text-slate-300",
+  };
+  return <p className={"text-center p-4 " + typeToClass[type]}>{message}</p>;
 }
 
 function YoutubeAcceptor({ onChange, status, hidden }) {
@@ -70,20 +92,39 @@ function YoutubeAcceptor({ onChange, status, hidden }) {
   );
 }
 
-function VideoPlayer({ hidden }) {
+function VideoPlayer({ hidden, link }) {
   const [shouldRender] = useDelayUnmount(!hidden, 1200, 1200);
+  const [location, setLocation] = useState(0);
+
+  if (!shouldRender) return null;
+
+  const onProgress = (event) => {
+    setLocation(event.playedSeconds);
+  };
 
   return (
     shouldRender && (
-      <div className="w-full transition delay-500 duration-700 ease-in-out">
-        <div className="h-40 w-full bg-white"></div>
+      <div className="w-full transition delay-500 duration-700 ease-in-out px-16">
+        <ReactPlayer
+          url={link}
+          width="100%"
+          height="60vh"
+          style={{ minHeight: "300px" }}
+          controls
+          onProgress={onProgress}
+        />
       </div>
     )
   );
 }
 
+// ==============================
+// > APPLICATION
+// ==============================
+
 export function App() {
   const [status, setStatus] = useState("waiting"); // waiting, error, success
+  const [youtubeLink, setYoutubeLink] = useState(null);
 
   const handleChange = (event) => {
     const youtubeLink = event.target.value;
@@ -95,9 +136,7 @@ export function App() {
     }
 
     // Check if the link is a valid YouTube video link
-    if (
-      !youtubeLink.match(/^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+$/g)
-    ) {
+    if (!youtubeLink.match(YOUTUBE_VIDEO_REGEX)) {
       setStatus("error");
       event.target.select();
       return;
@@ -105,12 +144,13 @@ export function App() {
 
     // Otherwise, set the status to success
     setStatus("success");
+    setYoutubeLink(youtubeLink);
     event.target.disabled = true;
   };
 
   return (
     <div className="h-full h-full bg-black text-white min-h-48">
-      <div className="max-w-screen-sm mx-auto h-full flex flex-col relative">
+      <div className="max-w-screen-lg mx-auto h-full flex flex-col relative">
         <div className="p-16 absolute w-full">
           <h1 className="text-3xl text-center">PersonaLearn Demo</h1>
         </div>
@@ -121,7 +161,7 @@ export function App() {
               status={status}
               hidden={status === "success"}
             />
-            <VideoPlayer hidden={status !== "success"} />
+            <VideoPlayer hidden={status !== "success"} link={youtubeLink} />
           </div>
         </div>
       </div>
