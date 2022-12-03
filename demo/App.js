@@ -92,7 +92,7 @@ function YoutubeAcceptor({ onChange, status, hidden }) {
   );
 }
 
-function VideoPlayer({ hidden, link }) {
+function VideoPlayer({ hidden, link, onFinished }) {
   const [shouldRender] = useDelayUnmount(!hidden, 1200, 1200);
   const [location, setLocation] = useState(0);
   const [confusingLocations, setConfusingLocations] = useState([]);
@@ -110,44 +110,74 @@ function VideoPlayer({ hidden, link }) {
 
   const handleFinished = () => {
     setPlaying(false);
+    onFinished(confusingLocations);
   };
 
   return (
-    shouldRender && (
-      <div className="w-full transition delay-500 duration-700 ease-in-out px-16">
-        <ReactPlayer
-          url={link}
-          width="100%"
-          height="60vh"
-          playing={playing}
-          style={{ minHeight: "300px" }}
-          controls
-          onProgress={onProgress}
-        />
-        <div>
-          <div className="p-8 pb-4 flex space-x-8">
-            <button
-              className="flex-1 px-8 py-4 border-2 border-violet-100 text-violet-100 text-2xl transition hover:-translate-y-1"
-              onClick={markLocation}
-            >
-              Mark Confusing Location
-            </button>
-            <button
-              className="flex-1 px-8 py-4 border-2 border-emerald-100 text-emerald-100 text-2xl transition hover:-translate-y-1"
-              onClick={handleFinished}
-            >
-              I'm Finished →
-            </button>
-          </div>
-          <div className="flex space-x-8">
-            <p className="flex-1 text-center text-slate-600">
-              {confusingLocations.length} Locations Marked
-            </p>
-            <div className="flex-1"></div>
-          </div>
+    <div
+      className={
+        "w-full transition delay-500 duration-700 ease-in-out px-16" +
+        (hidden ? " hidden" : "")
+      }
+    >
+      <ReactPlayer
+        url={link}
+        width="100%"
+        height="60vh"
+        playing={playing}
+        style={{ minHeight: "300px" }}
+        controls
+        onProgress={onProgress}
+      />
+      <div>
+        <div className="p-8 pb-4 flex space-x-8">
+          <button
+            className="flex-1 px-8 py-4 border-2 border-violet-100 text-violet-100 text-2xl transition hover:-translate-y-1"
+            onClick={markLocation}
+          >
+            Mark Confusing Location
+          </button>
+          <button
+            className="flex-1 px-8 py-4 border-2 border-emerald-100 text-emerald-100 text-2xl transition hover:-translate-y-1"
+            onClick={handleFinished}
+          >
+            I'm Finished →
+          </button>
+        </div>
+        <div className="flex space-x-8">
+          <p className="flex-1 text-center text-slate-600">
+            {confusingLocations.length} Locations Marked
+          </p>
+          <div className="flex-1"></div>
         </div>
       </div>
-    )
+    </div>
+  );
+}
+
+function VideoResults({ hidden, locations }) {
+  const [shouldRender] = useDelayUnmount(!hidden, 1200);
+  const [loading, setLoading] = useState(true);
+  const [results, setResults] = useState([]);
+
+  useEffect(() => {
+    // TODO: fetch results from backend
+  }, []);
+
+  if (!shouldRender) return null;
+
+  if (loading) {
+    return (
+      <div className="w-full transition delay-500 duration-700 ease-in-out px-16">
+        <p className="text-center text-slate-600">Loading...</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="w-full transition delay-500 duration-700 ease-in-out px-16">
+      <p className="text-center text-slate-600">Results</p>
+    </div>
   );
 }
 
@@ -156,8 +186,9 @@ function VideoPlayer({ hidden, link }) {
 // ==============================
 
 export function App() {
-  const [status, setStatus] = useState("waiting"); // waiting, error, success
+  const [status, setStatus] = useState("waiting"); // waiting, error, success, results
   const [youtubeLink, setYoutubeLink] = useState(null);
+  const [locations, setLocations] = useState([]);
 
   const handleChange = (event) => {
     const youtubeLink = event.target.value;
@@ -181,6 +212,11 @@ export function App() {
     event.target.disabled = true;
   };
 
+  const handleFinished = (locations) => {
+    setStatus("results");
+    setLocations(locations);
+  };
+
   return (
     <div className="h-full h-full bg-black text-white min-h-48">
       <div className="max-w-screen-lg mx-auto h-full flex flex-col relative">
@@ -192,9 +228,14 @@ export function App() {
             <YoutubeAcceptor
               onChange={handleChange}
               status={status}
-              hidden={status === "success"}
+              hidden={status === "success" || status === "results"}
             />
-            <VideoPlayer hidden={status !== "success"} link={youtubeLink} />
+            <VideoPlayer
+              hidden={status !== "success"}
+              link={youtubeLink}
+              onFinished={handleFinished}
+            />
+            <VideoResults hidden={status !== "results"} locations={locations} />
           </div>
         </div>
       </div>
