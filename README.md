@@ -24,6 +24,14 @@ This project requires Python 3.6+ and Node.js 10+.
 > npm install # this will also install Python's dependencies
 ```
 
+Install ffmpeg:
+
+```bash
+> brew install ffmpeg # on macOS
+> sudo apt install ffmpeg # on Ubuntu
+```
+
 ## Environment Variables
 
 - **OPENAI_API_KEY**
+- **YOUTUBE_API_KEY**
