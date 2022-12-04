@@ -155,28 +155,91 @@ function VideoPlayer({ hidden, link, onFinished }) {
   );
 }
 
-function VideoResults({ hidden, locations }) {
+function Result({ result, index }) {
+  return (
+    <div className="mb-12">
+      <h1 className="text-emerald-200 font-bold text-xl mb-1">
+        POINT {index + 1}
+      </h1>
+      <h2 className="text-4xl">{result.query}</h2>
+      <h3 className="text-slate-400 text-xl mt-2">
+        "{result.transcript_segment}"
+      </h3>
+      <div className="flex gap-x-8 py-8">
+        {result.resources.map((resource) => (
+          <div className="flex-1 border border-gray-900">
+            <img
+              className=""
+              style={{ height: 200, objectFit: "cover" }}
+              src={resource.thumbnail_url}
+            />
+            <div className="p-5 border-t border-gray-900">
+              <h4 className="text-xl">{resource.title}</h4>
+              <p className="text-slate-400 mt-2">{resource.channel_title}</p>
+              <p className="text-emerald-50 opacity-50 mt-5">
+                {resource.view_count} views
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+const API_URL = process.env.API_URL || "/";
+
+function VideoResults({ hidden, locations, link }) {
   const [shouldRender] = useDelayUnmount(!hidden, 1200);
   const [loading, setLoading] = useState(true);
   const [results, setResults] = useState([]);
 
   useEffect(() => {
-    // TODO: fetch results from backend
-  }, []);
+    if (shouldRender && loading) {
+      const videoId = YOUTUBE_VIDEO_REGEX.exec(link)[3];
+
+      fetch(`${API_URL}/recommend`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          videoId,
+          comprehensionPoints: locations.map((location) => ({
+            comprehension: -1,
+            timestamp: location,
+          })),
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setResults(data);
+          setLoading(false);
+        })
+        .catch((error) => {
+          window.alert("Something went wrong. Please try again later.");
+          console.error("Error:", error);
+        });
+    }
+  }, [shouldRender]);
 
   if (!shouldRender) return null;
 
   if (loading) {
     return (
       <div className="w-full transition delay-500 duration-700 ease-in-out px-16">
-        <p className="text-center text-slate-600">Loading...</p>
+        <p className="text-center text-slate-600">
+          Loading (this may take up to 5 minutes)...
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="w-full transition delay-500 duration-700 ease-in-out px-16">
-      <p className="text-center text-slate-600">Results</p>
+    <div className="w-full transition delay-500 duration-700 ease-in-out px-16 py-16 pt-44">
+      {results.map((result, index) => (
+        <Result key={index} result={result} index={index} />
+      ))}
     </div>
   );
 }
@@ -218,7 +281,7 @@ export function App() {
   };
 
   return (
-    <div className="h-full h-full bg-black text-white min-h-48">
+    <div className="flex-1 bg-black text-white min-h-48">
       <div className="max-w-screen-lg mx-auto h-full flex flex-col relative">
         <div className="p-16 absolute w-full">
           <h1 className="text-3xl text-center">PersonaLearn Demo</h1>
@@ -235,7 +298,11 @@ export function App() {
               link={youtubeLink}
               onFinished={handleFinished}
             />
-            <VideoResults hidden={status !== "results"} locations={locations} />
+            <VideoResults
+              hidden={status !== "results"}
+              locations={locations}
+              link={youtubeLink}
+            />
           </div>
         </div>
       </div>

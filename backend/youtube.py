@@ -19,6 +19,7 @@ class YouTubeResult(TypedDict):
 
     title: str
     video_id: str
+    thumbnail_url: str
     stats: Optional[YouTubeStats]
 
 
@@ -83,6 +84,7 @@ class YouTube:
                 continue
 
             video_id: str = item["id"]["videoId"]
+            thumbnail_url: str = item["snippet"]["thumbnails"]["medium"]["url"]
             title: str = item["snippet"]["title"]
 
             # Get stats
@@ -93,6 +95,7 @@ class YouTube:
             results.append(
                 {
                     "title": title,
+                    "thumbnail_url": thumbnail_url,
                     "video_id": video_id,
                     "stats": stats,
                 }

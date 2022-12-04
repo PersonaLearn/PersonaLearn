@@ -7,6 +7,7 @@ class Resource(TypedDict):
 
     video_id: str
     title: str
+    thumbnail_url: str
     channel_title: str
     view_count: str
 
@@ -27,6 +28,7 @@ def related_resources_from_query(query: str, *, max_count=None) -> list[Resource
         {
             "video_id": result["video_id"],
             "title": result["title"],
+            "thumbnail_url": result["thumbnail_url"],
             "channel_title": result["stats"]["channel_title"]
             if result["stats"] is not None
             else None,
