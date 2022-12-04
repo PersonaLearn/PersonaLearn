@@ -72,7 +72,9 @@ def recommend_resources():
         )
         logging.debug("Query options: %s", query_options)
         query = query_options[0]
-        related_resources = related_resources_from_query(query, max_count=3)
+        related_resources = related_resources_from_query(
+            query, max_count=3, filter_video_id=video_id
+        )
 
         recommendation: Recommendation = {
             "transcript_segment": transcript_segment,
