@@ -167,20 +167,23 @@ function Result({ result, index }) {
       </h3>
       <div className="flex gap-x-8 py-8">
         {result.resources.map((resource) => (
-          <div className="flex-1 border border-gray-900">
+          <a
+            className="flex-1 text-left border border-gray-800 transition hover:-translate-y-1"
+            href={`https://www.youtube.com/watch?v=${resource.video_id}`}
+            target="_blank"
+          >
             <img
-              className=""
               style={{ height: 200, objectFit: "cover" }}
               src={resource.thumbnail_url}
             />
-            <div className="p-5 border-t border-gray-900">
+            <div className="p-5 border-t border-gray-800">
               <h4 className="text-xl">{resource.title}</h4>
               <p className="text-slate-400 mt-2">{resource.channel_title}</p>
               <p className="text-emerald-50 opacity-50 mt-5">
                 {resource.view_count} views
               </p>
             </div>
-          </div>
+          </a>
         ))}
       </div>
     </div>
