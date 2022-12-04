@@ -20,9 +20,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
+      - name: Install whisper before other dependencies to satisfy stable-ts
+        run: pip install git+https://github.com/openai/whisper.git
       - name: Install all dependencies
-        run: |
-          npm install
+        run: npm install
       - name: Lint files
-        run: |
-          npm run lint
+        run: npm run lint

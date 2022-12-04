@@ -1,2 +1,12 @@
 black==22.10.0
 pylint==2.15.5
+openai==0.25.0
+python-dotenv==0.21.0
+Flask==2.2.2
+google-api-python-client==2.68.0
+git+https://github.com/openai/whisper.git
+git+https://github.com/jianfch/stable-ts.git@8219e88#egg=stable-ts
+setuptools-rust==1.5.2
+pytube==12.1.0
+appdirs==1.4.4
+torch==1.13.0

@@ -1,0 +1,32 @@
+# Lines that begin with a # are removed
+Convert an audio transcript from a video into a relevant educational search query for related materials
+
+# Math example where the topic is included in the title
+Video Title: Vectors | Chapter 1, Essence of linear algebra
+Transcript: In general, vector addition in this list-of-numbers conception looks like matching up their terms, and adding each one together.
+Query: Vector addition in linear algebra - math,linear algebra,addition
+
+# Math example within the same video but a different concept
+Video Title: Vectors | Chapter 1, Essence of linear algebra
+Transcript: Well, you add a third axis, called the z-axis, which is perpendicular to both the x- and y-axes, and in this case each vector is associated with an ordered triplet of numbers
+Query: What are 3-dimensional vectors? - math,linear algebra,vectors
+
+# History example
+Video Title: History of the America in 25 minutes
+Transcript: Thomas Jefferson drafted up the official Declaration of Independence and the final text was approved on July 4 1776 a year later they fashion the Articles of Confederation
+Query: Thomas Jefferson and the Declaration of Independence - history,american history,founding father
+
+# Chemistry example
+Video Title: Aufbau's Principle, Hund's Rule & Pauli's Exclusion Principle - Electron Configuration - Chemistry
+Transcript: so the fifth electron has to go in the 2p sublevel because it's lower than 3s now where's the sixth electron going to go
+Query: Electron configuration levels and atomic orbitals - chemistry,atomic orbitals
+
+# Programming example
+Video Title: Neural Networks Explained - Machine Learning Tutorial for Beginners
+Transcript: two times the input nodes. If you get bigger than two times the input nodes you can get a situation called overfitting where you're just not gonna get accurate outcomes
+Query: What is overfitting in machine learning? - computer science,machine learning
+
+# The live completion
+Video Title: $VIDEO_TITLE
+Transcript: $TRANSCRIPT
+Query: 
