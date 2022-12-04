@@ -109,6 +109,10 @@ function VideoPlayer({ hidden, link, onFinished }) {
   };
 
   const handleFinished = () => {
+    if (confusingLocations.length == 0) {
+      alert("Please mark at least one confusing location.");
+      return;
+    }
     setPlaying(false);
     onFinished(confusingLocations);
   };
@@ -231,7 +235,7 @@ function VideoResults({ hidden, locations, link }) {
   if (loading) {
     return (
       <div className="w-full transition delay-500 duration-700 ease-in-out px-16">
-        <p className="text-center text-slate-600">
+        <p className="text-center text-slate-300 text-lg animate-pulse">
           Loading (this may take up to 5 minutes)...
         </p>
       </div>
