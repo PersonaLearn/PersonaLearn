@@ -35,3 +35,4 @@ Install ffmpeg:
 
 - **OPENAI_API_KEY**
 - **YOUTUBE_API_KEY**
+- **API_URL** - URL of the API server

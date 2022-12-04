@@ -10,3 +10,4 @@ setuptools-rust==1.5.2
 pytube==12.1.0
 appdirs==1.4.4
 torch==1.13.0
+Flask-Cors==3.0.10

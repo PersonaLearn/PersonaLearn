@@ -2,6 +2,7 @@ import os
 import logging
 from typing import TypedDict
 from flask import Flask, request
+from flask_cors import cross_origin
 from backend.models.query_predictor.index import predict_query_from_transcript
 from backend.models.youtube_recommender import Resource, related_resources_from_query
 from backend.models.transcribe_video import transcribe_youtube_video, Transcription
@@ -47,12 +48,13 @@ def get_transcript_sections(transcript: Transcription, timestamps) -> list[str]:
 
 # API Routes
 @app.route("/recommend", methods=["POST"])
+@cross_origin()
 def recommend_resources():
     """API Route to access recommendations from a video ID and a list of comprehension points."""
     data = request.json
 
     video_id: str = data["videoId"]
-    comprehension_points: list[float] = data["comprehensionPoints"]
+    comprehension_points = data["comprehensionPoints"]
 
     confusing_timestamps = trivial_extract_confusion_timestamps(comprehension_points)
     transcript = transcribe_youtube_video(video_id)
@@ -82,6 +84,7 @@ def recommend_resources():
 
     logging.debug("Finished predicting queries from transcript segments")
 
+    print(related_resources)
     return recommendations
 
 
@@ -92,4 +95,4 @@ if __name__ == "__main__":
     load_dotenv(os.path.join(os.path.dirname(__file__), "../../.env"))
     openai.api_key = os.getenv("OPENAI_API_KEY")
 
-    app.run()
+    app.run(port=3000)

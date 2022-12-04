@@ -11,7 +11,8 @@
     "format:py": "black backend",
     "format:prettier": "prettier --write  **/*.{json,yml,md} extension",
     "prepare": "husky install",
-    "dev": "parcel demo/demo.html"
+    "dev": "parcel demo/demo.html",
+    "start:server": "python backend/server/index.py"
   },
   "repository": {
     "type": "git",

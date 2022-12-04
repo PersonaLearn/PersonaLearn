@@ -10,6 +10,7 @@ et-xmlfile==1.1.0
 ffmpeg-python==0.2.0
 filelock==3.8.0
 Flask==2.2.2
+Flask-Cors==3.0.10
 future==0.18.2
 google-api-core==2.11.0
 google-api-python-client==2.68.0
