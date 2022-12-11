@@ -97,4 +97,7 @@ if __name__ == "__main__":
     load_dotenv(os.path.join(os.path.dirname(__file__), "../../.env"))
     openai.api_key = os.getenv("OPENAI_API_KEY")
 
-    app.run(port=3000)
+    HOST = os.getenv("HOST", "localhost")
+    PORT = os.getenv("PORT", "3000")
+
+    app.run(host=HOST, port=int(PORT), debug=True)

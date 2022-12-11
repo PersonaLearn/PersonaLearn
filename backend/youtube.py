@@ -29,7 +29,7 @@ class YouTube:
     def __init__(self, api_key: Optional[str] = None):
         if api_key is None:
             api_key = environ.get("YOUTUBE_API_KEY")
-        self.youtube = build("youtube", "V3", developerKey=api_key)
+        self.youtube = build("youtube", "v3", developerKey=api_key)
 
     def search(
         self,
